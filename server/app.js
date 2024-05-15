@@ -2,7 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const morgan = require("morgan");
 const connectDB = require("./config/db")
-
+const auth = require("./middlewares/auth");
 
 const app = express();
 
@@ -11,7 +11,10 @@ app.use(express.json());// for returning in json format
 app.use(morgan("tiny")); // for logging in console whenever an API gets hit 
 
 //routes
-
+app.get("/protected",auth, (req,res) => {
+    return res.status(200)
+    .json({user: req.user});
+} )
 app.use("/api", require("./routes/auth"))
 
 app.get("/", (req, res) => {

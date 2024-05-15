@@ -36,6 +36,7 @@ router.post("/login", async(req,res) => {
         return res.status(500).json({error: err.message});
     }
 });
+
 router.post("/register", async(req,res)=> {
     const {name, email, password} = req.body;
 
@@ -77,4 +78,5 @@ router.post("/register", async(req,res)=> {
         return res.status(500).json({error: err.message});
     }
 })
+
 module.exports = router;
