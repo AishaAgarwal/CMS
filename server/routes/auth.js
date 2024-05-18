@@ -2,7 +2,9 @@ const router = require("express").Router();
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-require("dotenv").config({path:"./config/config.env" })
+require("dotenv").config({path:"./config/config.env" });
+
+const auth = require("../middlewares/auth");
 
 router.post("/login", async(req,res) => {
     const {email, password} = req.body;
@@ -29,7 +31,9 @@ router.post("/login", async(req,res) => {
             .json({error: "Invalid email or password"});
         const payload = {_id: doesUserExists._id};
         const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn : "1h"});
-        return res.status(200).json({token})
+        // console.log(token)
+        const user = {...doesUserExists._doc, password: undefined}
+        return res.status(200).json({token, user})
     }
     catch(err){
         console.log(err);
@@ -77,6 +81,10 @@ router.post("/register", async(req,res)=> {
         console.log(err);
         return res.status(500).json({error: err.message});
     }
-})
+});
+
+router.get("/me", auth, async(req,res) => {
+    return res.status(200).json({...req.user._doc});
+});
 
 module.exports = router;

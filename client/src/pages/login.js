@@ -3,8 +3,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useContext, useState } from "react";
 import AuthContext from "../context/AuthContext";
+import ToastContext from "../context/toastContext";
 const Login = () => {
-    const {loginUser} = useContext(AuthContext)
+    const {toast} = useContext(ToastContext);
+    const {loginUser} = useContext(AuthContext);
     const [credentials, setCredentials] = useState({
         email: "",
         password: "",
@@ -17,6 +19,7 @@ const Login = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
+        // toast.success("Logging in the")
         if (!credentials.email || !credentials.password){
             toast.error("please enter all the required fields!");
             return;
