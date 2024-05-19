@@ -5,7 +5,7 @@ import ToastContext from "../context/toastContext";
 
 const Navbar = ({ title = "CMS" }) => {
   const { user, setUser } = useContext(AuthContext);
-  const {toast} = useContext(ToastContext);
+  const { toast } = useContext(ToastContext);
   const navigate = useNavigate();
   return (
     <nav className="navbar navbar-expand-lg bg-light" data-bs-theme="light">
@@ -28,15 +28,23 @@ const Navbar = ({ title = "CMS" }) => {
           <ul className="navbar-nav ms-auto">
             {user ? (
               <>
+               <li className="nav-item">
+                  <Link to="/create">
+                    <a className="nav-link">Create</a>
+                  </Link>
+                </li>
                 {" "}
-                <li className="nav-item" onClick={() => {
-                  setUser(null);
-                  localStorage.clear();
-                  toast.success("Logged out...");
-                  setTimeout(() => {
-                    navigate("/login", { replace: true });
-                }, 2000); 
-                }}>
+                <li
+                  className="nav-item"
+                  onClick={() => {
+                    setUser(null);
+                    localStorage.clear();
+                    toast.success("Logged out...");
+                    setTimeout(() => {
+                      navigate("/login", { replace: true });
+                    }, 2000);
+                  }}
+                >
                   <button className="btn btn-warning">Logout</button>
                 </li>
               </>

@@ -24,16 +24,15 @@ const ContactSchema = new mongoose.Schema({
   },
 });
 
-const Contact = new mongooyse.model("Contact", ContactSchema);
+const Contact = new mongoose.model("Contact", ContactSchema);
 
 const validateContact = (data) => {
-    const schema = Joi.object({
-        name: Joi.string().min(4).max(50).required(), 
-        address: Joi.string().min(4).max(100).required(),
-        email: Joi.string().email().required(),
-        phone: Joi.number().max(10000000000).required(),
-    })
-    return schema.validate(data);
+  const schema = Joi.object({
+    name: Joi.string().min(4).max(50).required(),
+    address: Joi.string().min(4).max(100).required(),
+    email: Joi.string().email().required(),
+    phone: Joi.number().max(10000000000).required(),
+  });
+  return schema.validate(data);
 };
-module.exports ={validateContact,
-    Contact};
+module.exports = { validateContact, Contact };

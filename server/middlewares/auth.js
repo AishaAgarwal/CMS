@@ -15,7 +15,9 @@ module.exports = (req, res, next) => {
         );
         req.user = user;
         next();
-      } catch (err) {}
+      } catch (err) {
+        console.log(err);
+      }
     });
   } else {
     return res.status(403).json({ error: "Forbidden" });
