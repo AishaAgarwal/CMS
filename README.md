@@ -7,7 +7,7 @@
 <br />
 <div align="center">
   <a href="https://tse1.mm.bing.net/th?id=OIP.soZSRj2migQutCe_MFBh0AHaFh&pid=Api&P=0&h=180">
-    <img src="contact.png" alt="Connectify Logo" width="80" height="80">
+    <img src="contact.png" alt="Connectify Logo" width="100" height="80">
   </a>
 
   <h3 align="center">Connectify</h3>
