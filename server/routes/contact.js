@@ -1,5 +1,6 @@
 const { validateContact, Contact } = require("../models/contact");
 const auth = require("../middlewares/auth");
+const mongoose = require("mongoose");
 const router = require("express").Router();
 
 router.post("/contact", auth, async (req, res) => {
@@ -28,8 +29,21 @@ router.post("/contact", auth, async (req, res) => {
   }
 });
 
-// router.put("/contact", , async(req,res) => {
-  
-// })
+// fetch contact.
+router.get("/mycontacts", auth, async (req, res) => {
+  try {
+    const myContacts = await Contact.find({ postedBy: req.user._id }).populate(
+      "postedBy",
+      "-password"
+    );
+
+    return res.status(200).json({ contacts: myContacts.reverse() });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
+
 
 module.exports = router;

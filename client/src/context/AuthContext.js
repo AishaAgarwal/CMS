@@ -46,6 +46,7 @@ export const AuthContextProvider = ({ children }) => {
       const result = await res.json();
       if (!result.error) {
         localStorage.setItem("token", result.token);
+        console.log('JWT token:', result.token);
         console.log(result);
         setUser(result.user);
         toast.success(`Logged in ${result.user.name}`);

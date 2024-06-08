@@ -33,6 +33,11 @@ const Navbar = ({ title = "CMS" }) => {
                     <a className="nav-link">Create</a>
                   </Link>
                 </li>
+                <li className="nav-item">
+                  <Link to="/mycontacts">
+                    <a className="nav-link">Contacts </a>
+                  </Link>
+                </li>
                 {" "}
                 <li
                   className="nav-item"
