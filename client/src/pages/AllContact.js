@@ -3,13 +3,11 @@ import Spinner from "../components/Spinner";
 import { Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-
 const AllContact = () => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [modalData, setModalData] = useState({});
   const [contacts, setContacts] = useState([]);
- 
 
   useEffect(() => {
     setLoading(true);
@@ -23,9 +21,7 @@ const AllContact = () => {
         });
         const result = await res.json();
         if (!result.error) {
-          
           setContacts(result.contacts);
-          
 
           setLoading(false);
         } else {
@@ -40,27 +36,26 @@ const AllContact = () => {
   }, []);
 
   const deleteContact = async (id) => {
-    if (window.confirm("are you sure you want to delete this contact ?")){
-      try{
-        const res = await fetch(`https://localhost:8000/api/delete/${id}`, {
+    if (window.confirm("are you sure you want to delete this contact ?")) {
+      try {
+        console.log(`Deleting contact with id: ${id}`);
+        const res = await fetch(`http://localhost:8000/api/delete/${id}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
-
           },
         });
 
         const result = await res.json();
+        console.log("Delete response:", result);
         if (!result.error) {
           setContacts(result.myContacts);
-         
+
           setShowModal(false);
-        }
-        else{
+        } else {
           console.log(result.error);
         }
-      }
-      catch(err){
+      } catch (err) {
         console.log(err);
       }
     }
@@ -83,12 +78,14 @@ const AllContact = () => {
             </thead>
             <tbody>
               {contacts.map((contact) => (
-                <tr key={contact._id}
-                onClick={() => {
-                  setModalData([]);
-                  setModalData(contact);
-                  setShowModal(true);
-                }}>
+                <tr
+                  key={contact._id}
+                  onClick={() => {
+                    setModalData([]);
+                    setModalData(contact);
+                    setShowModal(true);
+                  }}
+                >
                   <th scope="row">{contact.name}</th>
                   <td>{contact.address}</td>
                   <td>{contact.email}</td>
