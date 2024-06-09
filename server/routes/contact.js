@@ -79,7 +79,7 @@ router.delete("/delete/id", auth, async (req, res) => {
 });
 
 // update contact
-router.put("/contact/:id", auth, async (res, req) => {
+router.put("/contact/:id", auth, async (req, res) => {
   const { id } = req.body;
   if (!id) {
     return res.status(400).json({ error: "no id specified." });
