@@ -9,7 +9,7 @@ router.post("/contact", auth, async (req, res) => {
     return res.status(400).json({ error: error.details[0].message });
   }
 
-  const {name, address, email, phone} = req.body;
+  const { name, address, email, phone } = req.body;
   const userId = req.user._id;
   console.log("userId: ", userId);
 
@@ -23,7 +23,7 @@ router.post("/contact", auth, async (req, res) => {
     });
 
     const result = await newContact.save();
-    return res.status(201).json({...result._doc});
+    return res.status(201).json({ ...result._doc });
   } catch (err) {
     console.log(err);
   }
@@ -43,25 +43,27 @@ router.get("/mycontacts", auth, async (req, res) => {
   }
 });
 
-// delete a contact 
-router.delete("/delete/id", auth, async (req,res) => {
-  const {id} = req.params;
+// delete a contact
+router.delete("/delete/id", auth, async (req, res) => {
+  const { id } = req.params;
   if (!id) {
-    return res.status(400).json({error: "no id specified."});
+    return res.status(400).json({ error: "no id specified." });
   }
 
-  if (!mongoose.isValidObjectId(id)){
-    return res.status(400).json({error: "please enter a valid id"});
+  if (!mongoose.isValidObjectId(id)) {
+    return res.status(400).json({ error: "please enter a valid id" });
   }
 
-  try{
-    const contact = await Contact.findOne({_id: id});
-    if (!contact){
-      return res.status(400).json({error: "no contact found"});
+  try {
+    const contact = await Contact.findOne({ _id: id });
+    if (!contact) {
+      return res.status(400).json({ error: "no contact found" });
     }
 
-    if (req.user._id.toString() !== contact.postedBy._id.toString()){
-      return res.status(401).json({error: "you can't delete other people contacts!"});
+    if (req.user._id.toString() !== contact.postedBy._id.toString()) {
+      return res
+        .status(401)
+        .json({ error: "you can't delete other people contacts!" });
     }
     const result = await Contact.deleteOne({ _id: id });
     const myContacts = await Contact.find({ postedBy: req.user._id }).populate(
@@ -69,13 +71,38 @@ router.delete("/delete/id", auth, async (req,res) => {
       "-password"
     );
     return res
-    .status(200)
-    .json({ ...contact._doc, myContacts: myContacts.reverse() });
-  }
-  catch(err){
+      .status(200)
+      .json({ ...contact._doc, myContacts: myContacts.reverse() });
+  } catch (err) {
     console.log(err);
   }
-})
+});
 
+// update contact
+router.put("/contact/:id", auth, async (res, req) => {
+  const { id } = req.body;
+  if (!id) {
+    return res.status(400).json({ error: "no id specified." });
+  }
 
+  if (!mongoose.isValidObjectId(id)) {
+    return res.status(400).json({ error: "please enter a valid id" });
+  }
+
+  try {
+    const contact = await Contact.findOne({ _id: id });
+    if (req.user._id.toString() !== contact.postedBy._id.toString()) {
+      return res
+        .status(401)
+        .json({ error: "you can't edit other people contacts!" });
+    }
+    const updatedData = { ...req.body, id: undefined };
+    const result = await Contact.findByIdAndUpdate(id, updatedData, {
+      new: true,
+    });
+    return res.status(200).json({...result._doc})
+  } catch (err) {
+    console.log(err);
+  }
+});
 module.exports = router;
