@@ -13,9 +13,7 @@ export const AuthContextProvider = ({ children }) => {
     checkUserLoggedIn();
   }, []);
   const checkUserLoggedIn = async () => {
-    if (localStorage.getItem("token")){
-      navigate("/login", {replace: true});
-    }
+   
     try {
       const res = await fetch(`http://localhost:8000/api/me`, {
         method: "GET",
@@ -25,8 +23,15 @@ export const AuthContextProvider = ({ children }) => {
       });
       const result = await res.json();
       if (!result.error) {
+        if (location.pathname === "/login" || location.pathname === "/register"){
+          navigate("/", { replace: true });
+          
+        }
+        else{
+          navigate(location.pathname ? location.pathname : "/")
+        }
         setUser(result);
-        navigate("/", { replace: true });
+        
       } else {
         navigate("/login", {replace: true});
       }
