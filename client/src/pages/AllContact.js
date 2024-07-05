@@ -116,7 +116,7 @@ const AllContact = () => {
         </Modal.Body>
 
         <Modal.Footer>
-          <Link className="btn-btn-info" to={`/edit/${modalData._id}`}>
+          <Link className="btn-btn-info" to={`/edit/:${modalData._id}`}>
             Edit
           </Link>
 

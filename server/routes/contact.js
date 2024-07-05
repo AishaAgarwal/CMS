@@ -44,7 +44,7 @@ router.get("/mycontacts", auth, async (req, res) => {
 });
 
 // delete a contact
-router.delete("/delete/id", auth, async (req, res) => {
+router.delete("/delete/:id", auth, async (req, res) => {
   const { id } = req.params;
   if (!id) {
     return res.status(400).json({ error: "no id specified." });
@@ -105,4 +105,25 @@ router.put("/contact/:id", auth, async (req, res) => {
     console.log(err);
   }
 });
+
+// to get a single contact
+router.get("/contact/:id", auth, async(req,res) => {
+  const {id} = req.params;
+  if (!id) {
+    return res.status(400).json({ error: "no id specified." });
+  }
+
+  if (!mongoose.isValidObjectId(id)) {
+    return res.status(400).json({ error: "please enter a valid id" });
+  }
+
+  try{
+    const contact = await Contact.findOne({_id:id});
+    return res.status(200).json({...contact._doc});
+  }
+  catch(err){
+    console.log(err);
+  }
+})
+router.get("")
 module.exports = router;
